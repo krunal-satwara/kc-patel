@@ -1,10 +1,15 @@
 package com.krunal.kcpatel.service;
 
+import com.krunal.kcpatel.entity.Sms;
 import com.krunal.kcpatel.entity.User;
+import com.krunal.kcpatel.entity.UserOtp;
+import com.krunal.kcpatel.repository.OtpRepository;
 import com.krunal.kcpatel.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +20,25 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private OtpRepository otpRepository;
+
+    @Autowired
+    BCryptPasswordEncoder encoder;
+
+    @Autowired
+    private CommonServices commonServices;
+
+    @Value("${otp.length}")
+    private int optLength;
+
+    @Autowired
+    private SmsService smsService;
+
     @Override
     public ResponseEntity<String> saveUser(User user) {
         try {
+            user.setUserPassword(encoder.encode(user.getUserPassword()));
             userRepository.save(user);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception exception) {
@@ -115,5 +136,64 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public char[] generateOTP() {
+        try {
+            return commonServices.OTP(optLength);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<String> forgotPassword(String userEmail) {
+        try {
+            User user = userRepository.findByUserEmail(userEmail);
+            UserOtp userOtp = new UserOtp();
+            userOtp.setUserId(user.getUserId());
+            userOtp.setOtp(generateOTP());
+            userOtp.setSend(true);
+            userOtp.setMatched(false);
+            otpRepository.save(userOtp);
+            Sms sms = new Sms();
+            sms.setSendTo(user.getUserMobile().toString());
+            sms.setMessage("Reset Password OTP:" + String.valueOf(userOtp.getOtp()));
+            sms.setSendType("TXT");
+            smsService.saveSms(sms);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public Object userEmailExist(String userEmail) {
+        try {
+            User user = userRepository.findByUserEmail(userEmail);
+            if (user != null) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<String> confirmOtp(Long userId, String otp) {
+        try {
+            UserOtp userOtp1 = otpRepository.findByUserIdAndOtpIsAndSendIsTrue(userId, Character.toChars(Integer.parseInt(otp)));
+            userOtp1.setMatched(true);
+            otpRepository.save(userOtp1);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 }

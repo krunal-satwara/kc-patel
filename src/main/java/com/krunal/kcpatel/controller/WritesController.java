@@ -16,7 +16,7 @@ public class WritesController {
     private WritesService writesService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> saveWrites(Writes writes) {
+    public ResponseEntity<String> saveWrites(@RequestBody Writes writes) {
         return writesService.saveWrites(writes);
     }
 

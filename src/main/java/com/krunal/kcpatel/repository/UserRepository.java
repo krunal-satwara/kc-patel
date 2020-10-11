@@ -16,4 +16,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     List<User> findAllByStatusIsFalseAndDeleteStatusIsFalse();
 
     List<User> findAllByDeleteStatusIsTrue();
+
+    User findByUserEmail(String userEmail);
 }

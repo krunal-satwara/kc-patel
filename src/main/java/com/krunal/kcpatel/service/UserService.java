@@ -1,6 +1,7 @@
 package com.krunal.kcpatel.service;
 
 import com.krunal.kcpatel.entity.User;
+import com.krunal.kcpatel.entity.UserOtp;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -24,5 +25,13 @@ public interface UserService {
     List<User> deactiveUsers();
 
     List<User> deletedUsers();
+
+    char[] generateOTP();
+
+    ResponseEntity<String> forgotPassword(String userEmail);
+
+    Object userEmailExist(String userEmail);
+
+    ResponseEntity<String> confirmOtp(Long userId, String userOtp);
 
 }

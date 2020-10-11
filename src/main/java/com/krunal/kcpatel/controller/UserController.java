@@ -1,9 +1,18 @@
 package com.krunal.kcpatel.controller;
 
+import com.krunal.kcpatel.entity.AuthenticationReponse;
+import com.krunal.kcpatel.entity.AuthenticationRequest;
 import com.krunal.kcpatel.entity.User;
+import com.krunal.kcpatel.service.MyUserDetailsService;
 import com.krunal.kcpatel.service.UserService;
+import com.krunal.kcpatel.util.JwtUtil;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +23,32 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MyUserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @ApiOperation(value = "Operations to perform authenticate user", response = Iterable.class)
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@RequestBody AuthenticationRequest request) throws Exception {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getUserEmail(), request.getUserPassword())
+            );
+        } catch (Exception e) {
+            throw new BadCredentialsException("Incorrect username or password", e);
+        }
+
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUserEmail());
+
+        final String jwt = jwtUtil.generateToken(userDetails);
+        return ResponseEntity.ok(new AuthenticationReponse(jwt));
+    }
 
     @PostMapping("/save")
     ResponseEntity<String> saveUser(@RequestBody User user) {
@@ -58,6 +93,26 @@ public class UserController {
     @DeleteMapping("/deleteUser/{userId}")
     ResponseEntity<String> deleteUser(@PathVariable("userId") Long userId) {
         return userService.deleteUser(userId);
+    }
+
+    @PostMapping("/forgotPassword/{userEmail}")
+    ResponseEntity<String> forgotPassword(@PathVariable("userEmail") String userEmail) {
+        return userService.forgotPassword(userEmail);
+    }
+
+    @PostMapping("/confirmOtp/{userId}/{otp}")
+    ResponseEntity<String> confirmOtp(@PathVariable("userId") Long userId, @PathVariable("otp") String otp) {
+        return userService.confirmOtp(userId, otp);
+    }
+
+    @GetMapping("/emailExist/{userEmail}")
+    Object userEmailExist(@PathVariable("userEmail") String userEmail) {
+        return userService.userEmailExist(userEmail);
+    }
+
+    @GetMapping("/opt")
+    public char[] generateOTP() {
+        return userService.generateOTP();
     }
 
 
