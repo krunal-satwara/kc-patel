@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUserId(Long userId);
 
@@ -18,4 +18,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     List<User> findAllByDeleteStatusIsTrue();
 
     User findByUserEmail(String userEmail);
+
 }

@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public char[] generateOTP() {
+    public String generateOTP() {
         try {
             return commonServices.OTP(optLength);
         } catch (Exception e) {
@@ -153,7 +153,9 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.findByUserEmail(userEmail);
             UserOtp userOtp = new UserOtp();
             userOtp.setUserId(user.getUserId());
-            userOtp.setOtp(generateOTP());
+            userOtp.setUserEmail(user.getUserEmail());
+            String generatedOTP = generateOTP();
+            userOtp.setOtp(generatedOTP);
             userOtp.setSend(true);
             userOtp.setMatched(false);
             otpRepository.save(userOtp);
@@ -162,7 +164,7 @@ public class UserServiceImpl implements UserService {
             sms.setMessage("Reset Password OTP:" + String.valueOf(userOtp.getOtp()));
             sms.setSendType("TXT");
             smsService.saveSms(sms);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(user.getUserId().toString(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,12 +185,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> confirmOtp(Long userId, String otp) {
+    public ResponseEntity<String> confirmOtp(String userEmail, String otp) {
         try {
-            UserOtp userOtp1 = otpRepository.findByUserIdAndOtpIsAndSendIsTrue(userId, Character.toChars(Integer.parseInt(otp)));
-            userOtp1.setMatched(true);
-            otpRepository.save(userOtp1);
-            return new ResponseEntity<>(HttpStatus.OK);
+            UserOtp userOtp1 = otpRepository.findByUserEmailIsAndOtpIsAndMatchedIsFalse(userEmail, otp);
+            if (userOtp1 != null) {
+                userOtp1.setMatched(true);
+                otpRepository.save(userOtp1);
+                return new ResponseEntity<>(userOtp1.getUserId().toString(), HttpStatus.OK);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

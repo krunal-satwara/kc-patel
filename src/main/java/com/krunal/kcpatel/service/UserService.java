@@ -26,12 +26,12 @@ public interface UserService {
 
     List<User> deletedUsers();
 
-    char[] generateOTP();
+    String generateOTP();
 
     ResponseEntity<String> forgotPassword(String userEmail);
 
     Object userEmailExist(String userEmail);
 
-    ResponseEntity<String> confirmOtp(Long userId, String userOtp);
+    ResponseEntity<String> confirmOtp(String userEmail, String userOtp);
 
 }

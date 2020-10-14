@@ -31,6 +31,9 @@ public class CommonServices {
     @Value("${sms.service.provider}")
     private String smsServiceProviderUrl;
 
+    @Value("${sms.service.provider.balance}")
+    private String smsServiceProviderBalace;
+
     public ResponseEntity<String> sendEmailForInquiry(String emailRecipient, String emailSubject, String emailMessage, String userEmail, String userPassword) throws Exception {
 
         Properties props = new Properties();
@@ -88,8 +91,16 @@ public class CommonServices {
         try {
             HttpHeaders headers = new HttpHeaders();
             HttpEntity<String> entity = new HttpEntity<>(null, headers);
-            String requestUrl = smsServiceProviderUrl + numbers + "&msgtype=TXT&message=" + message ;
-            System.out.println("Sms Response =" + restTemplateUtil(requestUrl, HttpMethod.GET, entity));
+
+            /*check sms balance & if lower than 100 then send message to developer about the same*/
+            String smsBalace = restTemplateUtil(smsServiceProviderBalace, HttpMethod.GET, entity);
+            if (Integer.parseInt(smsBalace.substring(smsBalace.indexOf(":") + 1)) < 100) {
+                String requestUrl = smsServiceProviderUrl + "9409312150" + "&msgtype=TXT&message=" + "K.C.Patel & Company SMS Balance is low please recharge.";
+                restTemplateUtil(requestUrl, HttpMethod.GET, entity);
+            }
+
+            String requestUrl = smsServiceProviderUrl + numbers + "&msgtype=TXT&message=" + message;
+            restTemplateUtil(requestUrl, HttpMethod.GET, entity);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,18 +119,18 @@ public class CommonServices {
     }
 
 
-    public char[] OTP(int optLength) {
+    public String OTP(int optLength) {
         // Using numeric values
         String numbers = "0123456789";
         // Using random method
         Random rndm_method = new Random();
-        char[] otp = new char[optLength];
-        for (int i = 0; i < optLength; i++) {
+        String otp = String.valueOf(optLength);
+        for (int i = 0; i < optLength - 1; i++) {
             // Use of charAt() method : to get character value
             // Use of nextInt() as it is scanning the value as int
-            otp[i] = numbers.charAt(rndm_method.nextInt(numbers.length()));
+            otp += String.valueOf(numbers.charAt(rndm_method.nextInt(numbers.length())));
         }
-        return otp;
+        return otp.toString();
     }
 
 }

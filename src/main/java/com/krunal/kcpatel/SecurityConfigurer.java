@@ -49,7 +49,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers( "/kcpatelapp/**","/v2/api-docs**","/user/save","/user/login","/role/roles",
-                        "/user/emailExist/**","/user/forgotPassword/**","/user/confirmOtp/**").permitAll()
+                        "/user/emailExist/**","/user/forgotPassword/**","/user/opt","/user/confirmOtp/**","/user/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

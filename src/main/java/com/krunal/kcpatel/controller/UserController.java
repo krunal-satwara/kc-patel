@@ -100,9 +100,9 @@ public class UserController {
         return userService.forgotPassword(userEmail);
     }
 
-    @PostMapping("/confirmOtp/{userId}/{otp}")
-    ResponseEntity<String> confirmOtp(@PathVariable("userId") Long userId, @PathVariable("otp") String otp) {
-        return userService.confirmOtp(userId, otp);
+    @PostMapping("/confirmOtp/{userEmail}/{otp}")
+    ResponseEntity<String> confirmOtp(@PathVariable("userEmail") String userEmail, @PathVariable("otp") String otp) {
+        return userService.confirmOtp(userEmail, otp);
     }
 
     @GetMapping("/emailExist/{userEmail}")
@@ -111,7 +111,7 @@ public class UserController {
     }
 
     @GetMapping("/opt")
-    public char[] generateOTP() {
+    public String generateOTP() {
         return userService.generateOTP();
     }
 

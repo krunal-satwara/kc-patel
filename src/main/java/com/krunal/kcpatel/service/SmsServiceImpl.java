@@ -3,6 +3,7 @@ package com.krunal.kcpatel.service;
 import com.krunal.kcpatel.entity.Sms;
 import com.krunal.kcpatel.repository.SmsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,16 @@ public class SmsServiceImpl implements SmsService {
     @Autowired
     private CommonServices commonServices;
 
+    @Value("${sms.service.flag}")
+    private boolean smsServiceFlag;
+
 
     @Override
     public ResponseEntity<String> saveSms(Sms sms) {
         try {
-            commonServices.sendSms(sms.getSendTo(),sms.getMessage());
+            if (smsServiceFlag == true) {
+                commonServices.sendSms(sms.getSendTo(), sms.getMessage());
+            }
             smsRepository.save(sms);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception exception) {

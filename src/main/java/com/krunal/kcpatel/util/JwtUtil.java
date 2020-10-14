@@ -49,7 +49,7 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         try {
             User user = userRepository.findByUserEmail(userDetails.getUsername());
-            System.out.println("User Id = " + user.getUserId());
+            claims.put("userId", user.getUserId());
             if (user.getWrites().size() != 0) {
                 Writes writes = user.getWrites().get(0);
                 claims.put("view", writes.isView());
