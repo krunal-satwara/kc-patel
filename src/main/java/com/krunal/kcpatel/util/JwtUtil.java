@@ -48,7 +48,7 @@ public class JwtUtil {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         try {
-            User user = userRepository.findByUserEmail(userDetails.getUsername());
+            User user = userRepository.findByUserEmailAndStatusIsTrue(userDetails.getUsername());
             claims.put("userId", user.getUserId());
             if (user.getWrites().size() != 0) {
                 Writes writes = user.getWrites().get(0);

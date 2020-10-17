@@ -10,6 +10,8 @@ public interface UserService {
 
     ResponseEntity<String> saveUser(User user);
 
+    ResponseEntity<String> updateUser(User user);
+
     User getUser(Long userId);
 
     List<User> users();
@@ -31,6 +33,8 @@ public interface UserService {
     ResponseEntity<String> forgotPassword(String userEmail);
 
     Object userEmailExist(String userEmail);
+
+    Object userEmailExistCheckForUpdate(String userEmail,Long userId);
 
     ResponseEntity<String> confirmOtp(String userEmail, String userOtp);
 

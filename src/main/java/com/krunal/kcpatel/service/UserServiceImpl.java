@@ -48,6 +48,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<String> updateUser(User user) {
+        try {
+            userRepository.save(user);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public User getUser(Long userId) {
         try {
             return userRepository.findByUserId(userId);
@@ -83,7 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> allUsers() {
         try {
-            return userRepository.findAll();
+            return userRepository.findAllByDeleteStatusIsFalse();
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -107,7 +118,8 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> deleteUser(Long userId) {
         try {
             User user = userRepository.findByUserId(userId);
-            user.setDeleteStatus(false);
+            user.setDeleteStatus(true);
+            user.setStatus(false);
             userRepository.save(user);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception exception) {
@@ -150,7 +162,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<String> forgotPassword(String userEmail) {
         try {
-            User user = userRepository.findByUserEmail(userEmail);
+            User user = userRepository.findByUserEmailAndStatusIsTrue(userEmail);
             UserOtp userOtp = new UserOtp();
             userOtp.setUserId(user.getUserId());
             userOtp.setUserEmail(user.getUserEmail());
@@ -161,7 +173,7 @@ public class UserServiceImpl implements UserService {
             otpRepository.save(userOtp);
             Sms sms = new Sms();
             sms.setSendTo(user.getUserMobile().toString());
-            sms.setMessage("Reset Password OTP:" + String.valueOf(userOtp.getOtp()));
+            sms.setMessage("Reset Password OTP:" + userOtp.getOtp());
             sms.setSendType("TXT");
             smsService.saveSms(sms);
             return new ResponseEntity<>(user.getUserId().toString(), HttpStatus.OK);
@@ -174,7 +186,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object userEmailExist(String userEmail) {
         try {
-            User user = userRepository.findByUserEmail(userEmail);
+            User user = userRepository.findByUserEmailAndStatusIsTrue(userEmail);
+            if (user != null) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    @Override
+    public Object userEmailExistCheckForUpdate(String userEmail, Long userId) {
+        try {
+            User user = userRepository.findByUserEmailAndStatusIsTrueAndUserIdIsNot(userEmail, userId);
             if (user != null) {
                 return true;
             }

@@ -55,6 +55,11 @@ public class UserController {
         return userService.saveUser(user);
     }
 
+    @PutMapping("/update")
+    ResponseEntity<String> updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
+    }
+
     @GetMapping("/{userId}")
     User getUser(@PathVariable("userId") Long userId) {
         return userService.getUser(userId);
@@ -108,6 +113,11 @@ public class UserController {
     @GetMapping("/emailExist/{userEmail}")
     Object userEmailExist(@PathVariable("userEmail") String userEmail) {
         return userService.userEmailExist(userEmail);
+    }
+
+    @GetMapping("/emailExist/{userEmail}/{userId}")
+    Object userEmailExistCheckForUpdate(@PathVariable("userEmail") String userEmail, @PathVariable("userId") Long userId) {
+        return userService.userEmailExistCheckForUpdate(userEmail, userId);
     }
 
     @GetMapping("/opt")
