@@ -1,5 +1,6 @@
 package com.krunal.kcpatel.entity;
 
+
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,24 +10,18 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-public class Writes {
+public class UserNavigationWrites {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long writesId;
+    private Long userNavigationWriteId;
+    private Long userNavigationId;
     private boolean view;
     private boolean edit;
     private boolean del;
-    private boolean status;
-
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createdOn;
     @UpdateTimestamp
     private LocalDateTime updatedOn;
-
-   /* @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "userId", nullable = false)
-    @JsonBackReference
-    private User user;*/
 }

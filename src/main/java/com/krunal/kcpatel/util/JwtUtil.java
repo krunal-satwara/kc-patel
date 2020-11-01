@@ -50,16 +50,16 @@ public class JwtUtil {
         try {
             User user = userRepository.findByUserEmailAndStatusIsTrue(userDetails.getUsername());
             claims.put("userId", user.getUserId());
-            if (user.getWrites().size() != 0) {
+            /*if (user.getWrites().size() != 0) {
                 Writes writes = user.getWrites().get(0);
                 claims.put("view", writes.isView());
                 claims.put("edit", writes.isEdit());
                 claims.put("del", writes.isDel());
-            } else {
+            } else {*/
                 claims.put("view", false);
                 claims.put("edit", false);
                 claims.put("del", false);
-            }
+            /*}*/
             Role role = roleRepository.findByRoleId(user.getRoleId());
             claims.put("write", "true");
             claims.put("roleName", role.getRoleName());

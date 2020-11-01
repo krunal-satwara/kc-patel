@@ -32,8 +32,8 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedOn;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true,targetEntity = Writes.class)
+   /* @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true,targetEntity = Writes.class)
     @JsonManagedReference
-    private List<Writes> writes = new ArrayList<>();
+    private List<Writes> writes = new ArrayList<>();*/
 
 }

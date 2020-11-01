@@ -1,9 +1,9 @@
 package com.krunal.kcpatel.controller;
 
-import com.krunal.kcpatel.entity.AuthenticationReponse;
-import com.krunal.kcpatel.entity.AuthenticationRequest;
-import com.krunal.kcpatel.entity.User;
+import com.krunal.kcpatel.entity.*;
 import com.krunal.kcpatel.service.MyUserDetailsService;
+import com.krunal.kcpatel.service.NavigationMasterService;
+import com.krunal.kcpatel.service.UserNavigationService;
 import com.krunal.kcpatel.service.UserService;
 import com.krunal.kcpatel.util.JwtUtil;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +26,12 @@ public class UserController {
 
     @Autowired
     private MyUserDetailsService userDetailsService;
+
+    @Autowired
+    private NavigationMasterService navigationMasterService;
+
+    @Autowired
+    private UserNavigationService userNavigationService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -123,6 +129,22 @@ public class UserController {
     @GetMapping("/opt")
     public String generateOTP() {
         return userService.generateOTP();
+    }
+
+
+    @GetMapping("/navigationMasterList")
+    public List<NavigationMaster> navigationMasterList() {
+        return navigationMasterService.navigationMasterList();
+    }
+
+    @PostMapping("/userNavigation")
+    public ResponseEntity<String> saveUserNavigation(@RequestBody List<UserNavigation> userNavigation) {
+        return userNavigationService.saveUserNavigation(userNavigation);
+    }
+
+    @GetMapping("userSavedNavigationList/{userId}")
+    public List<UserNavigation> userSavedNavigationList(@PathVariable("userId") Long userId) {
+        return userNavigationService.userSavedNavigationList(userId);
     }
 
 

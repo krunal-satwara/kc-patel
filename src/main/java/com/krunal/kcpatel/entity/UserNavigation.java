@@ -9,24 +9,18 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-public class Writes {
+public class UserNavigation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long writesId;
-    private boolean view;
-    private boolean edit;
-    private boolean del;
-    private boolean status;
-
+    private Long userNavigationId;
+    private Long navigationMasterId;
+    private Long userId;
+    private String navigationUrl;
+    private String displayName;
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createdOn;
     @UpdateTimestamp
     private LocalDateTime updatedOn;
-
-   /* @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "userId", nullable = false)
-    @JsonBackReference
-    private User user;*/
 }
