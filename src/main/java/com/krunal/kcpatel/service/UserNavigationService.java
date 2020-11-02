@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface UserNavigationService {
-    ResponseEntity<String> saveUserNavigation(List<UserNavigation> userNavigation);
+    ResponseEntity<String> saveUserNavigation(Long userId,List<UserNavigation> userNavigation);
 
     List<UserNavigation> userSavedNavigationList(Long userId);
 }

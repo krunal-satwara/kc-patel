@@ -39,7 +39,7 @@ public class UserController {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    @ApiOperation(value = "Operations to perform authenticate user", response = Iterable.class)
+    @ApiOperation(value = "Login User", response = Iterable.class)
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody AuthenticationRequest request) throws Exception {
         try {
@@ -137,15 +137,19 @@ public class UserController {
         return navigationMasterService.navigationMasterList();
     }
 
-    @PostMapping("/userNavigation")
-    public ResponseEntity<String> saveUserNavigation(@RequestBody List<UserNavigation> userNavigation) {
-        return userNavigationService.saveUserNavigation(userNavigation);
+    @PostMapping("/saveUserNavigation/{userId}")
+    public ResponseEntity<String> saveUserNavigation(@RequestBody List<UserNavigation> userNavigation,@PathVariable("userId") Long userId) {
+        return userNavigationService.saveUserNavigation(userId,userNavigation);
     }
 
-    @GetMapping("userSavedNavigationList/{userId}")
+    @GetMapping("/userSavedNavigationList/{userId}")
     public List<UserNavigation> userSavedNavigationList(@PathVariable("userId") Long userId) {
         return userNavigationService.userSavedNavigationList(userId);
     }
 
+    @GetMapping("/filteredNavigationMasterList/{userId}")
+    public List<NavigationMaster> filteredNavigationMasterList(@PathVariable("userId") Long userId) {
+        return navigationMasterService.filteredNavigationMasterList(userId);
+    }
 
 }

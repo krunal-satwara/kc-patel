@@ -2,8 +2,9 @@ package com.krunal.kcpatel.util;
 
 import com.krunal.kcpatel.entity.Role;
 import com.krunal.kcpatel.entity.User;
-import com.krunal.kcpatel.entity.Writes;
+import com.krunal.kcpatel.entity.UserNavigation;
 import com.krunal.kcpatel.repository.RoleRepository;
+import com.krunal.kcpatel.repository.UserNavigationRepository;
 import com.krunal.kcpatel.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -31,6 +33,9 @@ public class JwtUtil {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserNavigationRepository userNavigationRepository;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -50,19 +55,21 @@ public class JwtUtil {
         try {
             User user = userRepository.findByUserEmailAndStatusIsTrue(userDetails.getUsername());
             claims.put("userId", user.getUserId());
-            /*if (user.getWrites().size() != 0) {
-                Writes writes = user.getWrites().get(0);
-                claims.put("view", writes.isView());
-                claims.put("edit", writes.isEdit());
-                claims.put("del", writes.isDel());
-            } else {*/
-                claims.put("view", false);
-                claims.put("edit", false);
-                claims.put("del", false);
-            /*}*/
+            claims.put("view", false);
+            claims.put("edit", false);
+            claims.put("del", false);
             Role role = roleRepository.findByRoleId(user.getRoleId());
-            claims.put("write", "true");
             claims.put("roleName", role.getRoleName());
+            List<UserNavigation> userNavigations = userNavigationRepository.findAllByUserId(user.getUserId());
+            if(userNavigations != null){
+                String write = "";
+                for (UserNavigation userNavigation:userNavigations) {
+                    write += userNavigation.getNavigationUrl()+",";
+                }
+                claims.put("write", write);
+            } else {
+                claims.put("write", "false");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

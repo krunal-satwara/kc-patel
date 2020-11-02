@@ -16,7 +16,13 @@ public class UserNavigationServiceImpl implements UserNavigationService {
     private UserNavigationRepository userNavigationRepository;
 
     @Override
-    public ResponseEntity<String> saveUserNavigation(List<UserNavigation> userNavigation) {
+    public ResponseEntity<String> saveUserNavigation(Long userId,List<UserNavigation> userNavigation) {
+        List<UserNavigation> navigationList = userNavigationRepository.findAllByUserId(userId);
+        if(navigationList!=null) {
+            for (UserNavigation navigation : navigationList) {
+                userNavigationRepository.delete(navigation);
+            }
+        }
         try {
             for (UserNavigation navigation:userNavigation) {
                 userNavigationRepository.save(navigation);

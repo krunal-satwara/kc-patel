@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface NavigationMasterService {
     List<NavigationMaster> navigationMasterList();
+
+    List<NavigationMaster> filteredNavigationMasterList(Long userId);
 }
