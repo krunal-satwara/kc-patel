@@ -3,6 +3,7 @@ package com.krunal.kcpatel.util;
 import com.krunal.kcpatel.entity.Role;
 import com.krunal.kcpatel.entity.User;
 import com.krunal.kcpatel.entity.UserNavigation;
+import com.krunal.kcpatel.repository.AgentRepository;
 import com.krunal.kcpatel.repository.RoleRepository;
 import com.krunal.kcpatel.repository.UserNavigationRepository;
 import com.krunal.kcpatel.repository.UserRepository;
@@ -36,6 +37,9 @@ public class JwtUtil {
 
     @Autowired
     private UserNavigationRepository userNavigationRepository;
+
+    @Autowired
+    private AgentRepository agentRepository;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

@@ -1,5 +1,10 @@
 package com.krunal.kcpatel.service;
 
+import com.krunal.kcpatel.entity.City;
+import com.krunal.kcpatel.entity.State;
+import com.krunal.kcpatel.repository.CityRepository;
+import com.krunal.kcpatel.repository.StateRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -10,6 +15,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -33,6 +39,10 @@ public class CommonServices {
 
     @Value("${sms.service.provider.balance}")
     private String smsServiceProviderBalace;
+
+    @Autowired private StateRepository stateRepository;
+
+    @Autowired private CityRepository cityRepository;
 
     public ResponseEntity<String> sendEmailForInquiry(String emailRecipient, String emailSubject, String emailMessage, String userEmail, String userPassword) throws Exception {
 
@@ -131,6 +141,18 @@ public class CommonServices {
             otp += String.valueOf(numbers.charAt(rndm_method.nextInt(numbers.length())));
         }
         return otp.toString();
+    }
+
+    public List<State> stateList() {
+        return stateRepository.findAll();
+    }
+
+    public List<City> cityList() {
+        return cityRepository.findAll();
+    }
+
+    public List<City> stateWiseCity(Long stateId) {
+        return cityRepository.findAllByStateId(stateId);
     }
 
 }

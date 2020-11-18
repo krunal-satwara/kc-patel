@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class NavigationMasterServiceImpl implements NavigationMasterService {
@@ -27,21 +25,26 @@ public class NavigationMasterServiceImpl implements NavigationMasterService {
 
     @Override
     public List<NavigationMaster> filteredNavigationMasterList(Long userId) {
-        List<NavigationMaster> navigationMasterList = navigationMasterList();
-        List<UserNavigation> navigationList = userNavigationService.userSavedNavigationList(userId);
-        List<NavigationMaster> filteredNavigationMasterList = new ArrayList<>();
-        filteredNavigationMasterList.addAll(navigationMasterList);
-        for (UserNavigation userNavigation: navigationList) {
-            NavigationMaster navigationMaster = new NavigationMaster();
-            navigationMaster.setNavigationMasterId(userNavigation.getNavigationMasterId());
-            navigationMaster.setDisplayName(userNavigation.getDisplayName());
-            navigationMaster.setNavigationUrl(userNavigation.getNavigationUrl());
-            for (NavigationMaster navigationMaster1: navigationMasterList) {
-                if(navigationMaster1.getNavigationMasterId() == userNavigation.getNavigationMasterId()){
-                    filteredNavigationMasterList.remove(navigationMaster);
+        try {
+            List<NavigationMaster> navigationMasterList = navigationMasterList();
+            List<UserNavigation> navigationList = userNavigationService.userSavedNavigationList(userId);
+            List<NavigationMaster> filteredNavigationMasterList = new ArrayList<>();
+            filteredNavigationMasterList.addAll(navigationMasterList);
+            for (UserNavigation userNavigation : navigationList) {
+                NavigationMaster navigationMaster = new NavigationMaster();
+                navigationMaster.setNavigationMasterId(userNavigation.getNavigationMasterId());
+                navigationMaster.setDisplayName(userNavigation.getDisplayName());
+                navigationMaster.setNavigationUrl(userNavigation.getNavigationUrl());
+                for (NavigationMaster navigationMaster1 : navigationMasterList) {
+                    if (navigationMaster1.getNavigationMasterId() == userNavigation.getNavigationMasterId()) {
+                        filteredNavigationMasterList.remove(navigationMaster);
+                    }
                 }
             }
+            return filteredNavigationMasterList;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return filteredNavigationMasterList;
+        return null;
     }
 }
