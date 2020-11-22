@@ -1,3 +1,5 @@
+DROP TABLE `kcpatel`.`navigation_master`;
+CREATE TABLE `kcpatel`.`navigation_master` (`navigation_master_id` bigint NOT NULL,`display_name` varchar(255) DEFAULT NULL,`navigation_url` varchar(255) DEFAULT NULL,PRIMARY KEY (`navigation_master_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_url`, `display_name`)VALUES (1,'/dashboard','DASHBOARD');
 INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_url`, `display_name`)VALUES (2,'/users','USER MANAGEMENT');
 INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_url`, `display_name`)VALUES (3,'/customer','CUSTOMER MANAGEMENT');

@@ -1,7 +1,6 @@
 package com.krunal.kcpatel.service;
 
 import com.krunal.kcpatel.entity.Agent;
-import com.krunal.kcpatel.entity.User;
 import com.krunal.kcpatel.entity.UserAgent;
 import com.krunal.kcpatel.repository.AgentRepository;
 import com.krunal.kcpatel.repository.UserAgentRepository;
@@ -47,9 +46,12 @@ public class AgentServiceImpl implements AgentService {
     @Override
     public ResponseEntity<String> deleteAgent(Long agentId) {
         try {
-            Agent agent = agentRepository.findByAgentId(agentId);
-            agentRepository.delete(agent);
-            return new ResponseEntity<>(HttpStatus.OK);
+            List<UserAgent> userAgentList = userAgentRepository.findAllByAgentId(agentId);
+            if (userAgentList.size() == 0) {
+                Agent agent = agentRepository.findByAgentId(agentId);
+                agentRepository.delete(agent);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,12 +85,12 @@ public class AgentServiceImpl implements AgentService {
             List<UserAgent> savedAgentList = savedAgentListForUser(userId);
             List<Agent> filteredUserAgentList = new ArrayList<>();
             filteredUserAgentList.addAll(userAgentList);
-            for (UserAgent userAgent:savedAgentList) {
+            for (UserAgent userAgent : savedAgentList) {
                 Agent agent = new Agent();
                 agent.setAgentId(userAgent.getAgentId());
                 agent.setAgentCode(userAgent.getAgentCode());
-                for (Agent agent1: userAgentList) {
-                    if(agent.getAgentId().equals(agent1.getAgentId())){
+                for (Agent agent1 : userAgentList) {
+                    if (agent.getAgentId().equals(agent1.getAgentId())) {
                         filteredUserAgentList.remove(agent);
                     }
                 }
@@ -103,13 +105,13 @@ public class AgentServiceImpl implements AgentService {
     @Override
     public ResponseEntity<String> saveUserAgentList(Long userId, List<UserAgent> userAgents) {
         List<UserAgent> userAgentList = userAgentRepository.findAllByUserId(userId);
-        if(userAgentList!=null) {
+        if (userAgentList != null) {
             for (UserAgent userAgent : userAgentList) {
                 userAgentRepository.delete(userAgent);
             }
         }
         try {
-            for (UserAgent userAgent:userAgents) {
+            for (UserAgent userAgent : userAgents) {
                 userAgentRepository.save(userAgent);
             }
             return new ResponseEntity<>(HttpStatus.OK);

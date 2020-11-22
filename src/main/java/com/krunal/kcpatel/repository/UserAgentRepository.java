@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface UserAgentRepository extends JpaRepository<UserAgent, Long> {
     List<UserAgent> findAllByUserId(Long userId);
+
+    List<UserAgent> findAllByAgentId(Long userId);
 }

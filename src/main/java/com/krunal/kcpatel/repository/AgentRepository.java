@@ -9,4 +9,5 @@ public interface AgentRepository extends JpaRepository<Agent, Long> {
     Agent findByAgentId(Long agentId);
 
     Agent findByAgentCode(String agentCode);
+
 }

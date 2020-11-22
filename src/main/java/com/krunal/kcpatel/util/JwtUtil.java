@@ -2,11 +2,9 @@ package com.krunal.kcpatel.util;
 
 import com.krunal.kcpatel.entity.Role;
 import com.krunal.kcpatel.entity.User;
+import com.krunal.kcpatel.entity.UserAgent;
 import com.krunal.kcpatel.entity.UserNavigation;
-import com.krunal.kcpatel.repository.AgentRepository;
-import com.krunal.kcpatel.repository.RoleRepository;
-import com.krunal.kcpatel.repository.UserNavigationRepository;
-import com.krunal.kcpatel.repository.UserRepository;
+import com.krunal.kcpatel.repository.*;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,7 +22,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    public static final long JWT_TOKEN_VALIDITY = 730 * 60 * 60;
+    public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -39,7 +37,7 @@ public class JwtUtil {
     private UserNavigationRepository userNavigationRepository;
 
     @Autowired
-    private AgentRepository agentRepository;
+    private UserAgentRepository userAgentRepository;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -73,6 +71,16 @@ public class JwtUtil {
                 claims.put("write", write);
             } else {
                 claims.put("write", "false");
+            }
+            List<UserAgent> userAgentList = userAgentRepository.findAllByUserId(user.getUserId());
+            if(userAgentList != null) {
+                String agent = "";
+                for (UserAgent userAgent:userAgentList) {
+                    agent += userAgent.getAgentCode()+",";
+                }
+                claims.put("agent", agent);
+            } else {
+                claims.put("agent", "false");
             }
         } catch (Exception e) {
             e.printStackTrace();
