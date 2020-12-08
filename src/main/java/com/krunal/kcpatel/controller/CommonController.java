@@ -1,7 +1,8 @@
 package com.krunal.kcpatel.controller;
 
-import com.krunal.kcpatel.entity.City;
-import com.krunal.kcpatel.entity.State;
+import com.krunal.kcpatel.entity.Cities;
+import com.krunal.kcpatel.entity.Countries;
+import com.krunal.kcpatel.entity.States;
 import com.krunal.kcpatel.service.CommonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,18 +19,18 @@ public class CommonController {
     @Autowired
     private CommonServices commonServices;
 
-    @GetMapping("/stateList")
-    public List<State> stateList() {
-        return commonServices.stateList();
+    @GetMapping("/countries")
+    public List<Countries> countriesList() {
+        return commonServices.countriesList();
     }
 
-    @GetMapping("/cityList")
-    public List<City> cityList() {
-        return commonServices.cityList();
+    @GetMapping("/cityList/{countryId}")
+    public List<States> countryWiseStateList(@PathVariable("countryId") Long countryId) {
+        return commonServices.countryWiseStateList(countryId);
     }
 
     @GetMapping("/stateWiseCityList/{stateId}")
-    public List<City> stateWiseCityList(@PathVariable("stateId") Long stateId) {
-        return commonServices.stateWiseCity(stateId);
+    public List<Cities> stateWiseCityList(@PathVariable("stateId") Long stateId) {
+        return commonServices.stateWiseCityList(stateId);
     }
 }

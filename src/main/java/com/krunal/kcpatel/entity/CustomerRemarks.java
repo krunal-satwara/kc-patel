@@ -20,8 +20,9 @@ public class CustomerRemarks {
     private Long customerRemarksId;
     private Long customerId;
     private String customerRemarks;
+    private Long userId;
     private String userName;
-    private String status;
+    private boolean status;
     @UpdateTimestamp
     private LocalDateTime updatedOn;
 }

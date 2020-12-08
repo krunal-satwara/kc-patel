@@ -1,8 +1,10 @@
 package com.krunal.kcpatel.service;
 
-import com.krunal.kcpatel.entity.City;
-import com.krunal.kcpatel.entity.State;
+import com.krunal.kcpatel.entity.Cities;
+import com.krunal.kcpatel.entity.Countries;
+import com.krunal.kcpatel.entity.States;
 import com.krunal.kcpatel.repository.CityRepository;
+import com.krunal.kcpatel.repository.CountryRepository;
 import com.krunal.kcpatel.repository.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +41,8 @@ public class CommonServices {
 
     @Value("${sms.service.provider.balance}")
     private String smsServiceProviderBalace;
+
+    @Autowired private CountryRepository countryRepository;
 
     @Autowired private StateRepository stateRepository;
 
@@ -143,15 +147,11 @@ public class CommonServices {
         return otp.toString();
     }
 
-    public List<State> stateList() {
-        return stateRepository.findAll();
-    }
+    public List<Countries> countriesList() { return countryRepository.findAll(); }
 
-    public List<City> cityList() {
-        return cityRepository.findAll();
-    }
+    public List<States> countryWiseStateList(Long countryId) { return stateRepository.findAllByCountryId(countryId); }
 
-    public List<City> stateWiseCity(Long stateId) {
+    public List<Cities> stateWiseCityList(Long stateId) {
         return cityRepository.findAllByStateId(stateId);
     }
 

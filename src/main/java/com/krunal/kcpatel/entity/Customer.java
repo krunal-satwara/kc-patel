@@ -21,6 +21,8 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long customerId;
     private String customerName;
+    private Long agentId;
+    private String agentCode;
     private String address;
     private String stateId;
     private String cityId;
