@@ -11,6 +11,8 @@ public interface CustomerService {
 
     List<Customer> customers();
 
+    List<Customer> customers(String agentCode);
+
     ResponseEntity<String> updateCustomer(Customer customer);
 
     ResponseEntity<String> deleteCustomer(Long customerId);

@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -30,6 +32,22 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> customers() {
         try {
             return customerRepository.findAllByCustomerStatusIsTrue();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Customer> customers(String agentCode) {
+        try {
+            List<Customer> finalCustomerList = new ArrayList<>();
+            ArrayList<String> agentList = new ArrayList<>(Arrays.asList(agentCode.split(",")));
+            for (String agent: agentList) {
+                List<Customer> customerList = customerRepository.findAllByCustomerStatusIsTrueAndAgentCodeIs(agent);
+                finalCustomerList.addAll(customerList);
+            }
+            return finalCustomerList;
         } catch (Exception e) {
             e.printStackTrace();
         }

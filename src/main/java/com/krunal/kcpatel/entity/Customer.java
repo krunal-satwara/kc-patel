@@ -21,11 +21,16 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long customerId;
     private String customerName;
+    private Long userId;
     private Long agentId;
     private String agentCode;
     private String address;
-    private String stateId;
-    private String cityId;
+    private Long countryId;
+    private Long stateId;
+    private Long cityId;
+    private String country;
+    private String state;
+    private String city;
     private String pinCode;
     private String website;
     private boolean status;

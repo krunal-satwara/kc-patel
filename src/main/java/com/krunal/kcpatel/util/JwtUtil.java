@@ -75,10 +75,13 @@ public class JwtUtil {
             List<UserAgent> userAgentList = userAgentRepository.findAllByUserId(user.getUserId());
             if(userAgentList != null) {
                 String agent = "";
+                String agentId = "";
                 for (UserAgent userAgent:userAgentList) {
                     agent += userAgent.getAgentCode()+",";
+                    agentId += userAgent.getAgentId();
                 }
                 claims.put("agent", agent);
+                claims.put("agentId", agentId);
             } else {
                 claims.put("agent", "false");
             }

@@ -18,7 +18,7 @@ public class States {
     private Long stateId;
     @Column(name = "name")
     private String stateName;
-    private String countryId;
+    private Long countryId;
     @Column(name = "iso2")
     private String countryCode;
 }

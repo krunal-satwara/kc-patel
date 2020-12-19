@@ -18,5 +18,5 @@ public class Cities {
     private Long cityId;
     @Column(name = "name")
     private String cityName;
-    private String stateId;
+    private Long stateId;
 }

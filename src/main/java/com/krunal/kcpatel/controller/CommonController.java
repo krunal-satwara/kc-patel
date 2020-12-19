@@ -24,7 +24,7 @@ public class CommonController {
         return commonServices.countriesList();
     }
 
-    @GetMapping("/cityList/{countryId}")
+    @GetMapping("/countryWiseStateList/{countryId}")
     public List<States> countryWiseStateList(@PathVariable("countryId") Long countryId) {
         return commonServices.countryWiseStateList(countryId);
     }

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.krunal.kcpatel.KcpatelApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.906 s - in com.krunal.kcpatel.KcpatelApplicationTests

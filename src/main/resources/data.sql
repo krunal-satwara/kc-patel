@@ -15,4 +15,10 @@ INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_ur
 INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_url`, `display_name`)VALUES (23,'/deleteUser','DELETE USER');
 INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_url`, `display_name`)VALUES (24,'/resetUser','RESET USER');
 INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_url`, `display_name`)VALUES (25,'/userWrites','USER WRITES');
+INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_url`, `display_name`)VALUES (26,'/agents','AGENTS');
+INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_url`, `display_name`)VALUES (27,'/deleteAgent','DELETE AGENT');
 
+
+INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_url`, `display_name`)VALUES (31,'/viewCustomer','VIEW CUSTOMER');
+INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_url`, `display_name`)VALUES (32,'/editCustomer','EDIT CUSTOMER');
+INSERT INTO `kcpatel`.`navigation_master`(`navigation_master_id`, `navigation_url`, `display_name`)VALUES (33,'/deleteCustomer','DELETE CUSTOMER');
