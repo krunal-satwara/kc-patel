@@ -26,7 +26,7 @@ public class CustomerController {
         return customerService.customers();
     }
 
-    @GetMapping("/customers/{agentCode}")
+    @GetMapping("/agentWiseCustomers/{agentCode}")
     public List<Customer> agentWiseCustomers(@PathVariable("agentCode") String agentCode) {
         return customerService.customers(agentCode);
     }

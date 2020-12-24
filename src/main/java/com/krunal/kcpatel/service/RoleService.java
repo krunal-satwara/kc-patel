@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+
 public interface RoleService {
 
     ResponseEntity<String> saveRole(Role role);

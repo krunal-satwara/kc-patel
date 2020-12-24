@@ -1,6 +1,8 @@
 package com.krunal.kcpatel.service;
 
+import com.krunal.kcpatel.entity.Agent;
 import com.krunal.kcpatel.entity.Customer;
+import com.krunal.kcpatel.repository.AgentRepository;
 import com.krunal.kcpatel.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,19 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private AgentRepository agentRepository;
+
     @Override
     public ResponseEntity<String> customer(Customer customer) {
         try {
+            ArrayList<String> agentIdList = new ArrayList<>(Arrays.asList(customer.getAgentId().split(",")));
+            String agentCode = "";
+            for (String agentId: agentIdList) {
+                Agent agent = agentRepository.findByAgentId(Long.parseLong(agentId));
+                agentCode += agent.getAgentCode() + ", ";
+            }
+            customer.setAgentCode(agentCode);
             customerRepository.save(customer);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception exception) {
@@ -41,11 +53,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<Customer> customers(String agentCode) {
         try {
+            System.out.println("Agent Code ="+agentCode);
             List<Customer> finalCustomerList = new ArrayList<>();
             ArrayList<String> agentList = new ArrayList<>(Arrays.asList(agentCode.split(",")));
             for (String agent: agentList) {
-                List<Customer> customerList = customerRepository.findAllByCustomerStatusIsTrueAndAgentCodeIs(agent);
-                finalCustomerList.addAll(customerList);
+                 List<Customer> customerList = customerRepository.findAllByCustomerStatusIsTrueAndAgentCodeContains(agent);
+                 finalCustomerList.addAll(customerList);
             }
             return finalCustomerList;
         } catch (Exception e) {

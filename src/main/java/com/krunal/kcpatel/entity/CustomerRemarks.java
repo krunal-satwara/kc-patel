@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -23,6 +24,9 @@ public class CustomerRemarks {
     private Long userId;
     private String userName;
     private boolean status;
+    @Column(updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdOn;
     @UpdateTimestamp
     private LocalDateTime updatedOn;
 }

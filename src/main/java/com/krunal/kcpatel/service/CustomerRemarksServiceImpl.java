@@ -27,9 +27,9 @@ public class CustomerRemarksServiceImpl implements CustomerRemarksService {
     }
 
     @Override
-    public List<CustomerRemarks> customerRemarksList() {
+    public List<CustomerRemarks> customerRemarksList(Long customerId) {
         try {
-            return customerRemarksRepository.findAllByStatusIsTrue();
+            return customerRemarksRepository.findAllByStatusIsTrueAndCustomerId(customerId);
         } catch (Exception exception) {
             exception.printStackTrace();
         }

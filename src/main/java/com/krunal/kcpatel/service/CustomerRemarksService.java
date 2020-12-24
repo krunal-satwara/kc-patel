@@ -9,7 +9,7 @@ public interface CustomerRemarksService {
 
     ResponseEntity<String> saveCustomerRemarks(CustomerRemarks customerRemarks);
 
-    List<CustomerRemarks> customerRemarksList();
+    List<CustomerRemarks> customerRemarksList(Long customerId);
 
     ResponseEntity<String> updateCustomerRemarks(CustomerRemarks customerRemarks);
 

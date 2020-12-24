@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface CustomerRemarksRepository extends JpaRepository<CustomerRemarks, Long> {
 
-    List<CustomerRemarks> findAllByStatusIsTrue();
+    List<CustomerRemarks> findAllByStatusIsTrueAndCustomerId(Long customerId);
 
     CustomerRemarks findByCustomerRemarksId(Long customerRemarksId);
 

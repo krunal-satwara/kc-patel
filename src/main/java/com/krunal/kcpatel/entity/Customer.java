@@ -22,8 +22,6 @@ public class Customer {
     private Long customerId;
     private String customerName;
     private Long userId;
-    private Long agentId;
-    private String agentCode;
     private String address;
     private Long countryId;
     private Long stateId;
@@ -33,13 +31,20 @@ public class Customer {
     private String city;
     private String pinCode;
     private String website;
+    private String agentId;
+    private String agentCode;
     private boolean status;
     private boolean customerStatus;
     private LocalDateTime createdOn;
     @UpdateTimestamp
     private LocalDateTime updatedOn;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER, orphanRemoval = true,targetEntity = ContactPerson.class)
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY, orphanRemoval = true,targetEntity = ContactPerson.class)
     @JsonManagedReference
     private List<ContactPerson> contactPerson = new ArrayList<>();
+
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY, orphanRemoval = true,targetEntity = CustomerAgent.class)
+    @JsonManagedReference
+    private List<CustomerAgent> customerAgents = new ArrayList<>();*/
 
 }

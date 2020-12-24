@@ -2,7 +2,6 @@ package com.krunal.kcpatel.controller;
 
 
 import com.krunal.kcpatel.entity.CustomerRemarks;
-import com.krunal.kcpatel.entity.Role;
 import com.krunal.kcpatel.service.CustomerRemarksService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +30,9 @@ public class CustomerRemarksController {
         return customerRemarksService.customerRemarks(customerRemarksId);
     }
 
-    @GetMapping("/customerRemarksList")
-    public List<CustomerRemarks> customerRemarksList() {
-        return customerRemarksService.customerRemarksList();
+    @GetMapping("/customerRemarksList/{customerId}")
+    public List<CustomerRemarks> customerRemarksList(@PathVariable("customerId") Long customerId) {
+        return customerRemarksService.customerRemarksList(customerId);
     }
 
     @DeleteMapping("/{customerRemarksId}")
