@@ -1,5 +1,6 @@
 package com.krunal.kcpatel.service;
 
+import com.krunal.kcpatel.entity.ContactPerson;
 import com.krunal.kcpatel.entity.Customer;
 import org.springframework.http.ResponseEntity;
 
@@ -20,5 +21,9 @@ public interface CustomerService {
     Customer customer(Long customerId);
 
     ResponseEntity<String> activeDeactiveCustomer(Long customerId);
+
+    List<Customer> customersUsingMobileNo(String search);
+
+    Long generateCustomerGroupNo();
 
 }

@@ -35,6 +35,7 @@ public class Customer {
     private String agentCode;
     private boolean status;
     private boolean customerStatus;
+    private String groupNo;
     private LocalDateTime createdOn;
     @UpdateTimestamp
     private LocalDateTime updatedOn;

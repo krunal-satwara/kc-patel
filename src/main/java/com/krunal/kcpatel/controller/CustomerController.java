@@ -1,5 +1,6 @@
 package com.krunal.kcpatel.controller;
 
+import com.krunal.kcpatel.entity.ContactPerson;
 import com.krunal.kcpatel.entity.Customer;
 import com.krunal.kcpatel.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,15 @@ public class CustomerController {
     @PostMapping("/customerStatus/{customerId}")
     public ResponseEntity<String> activeDeactiveCustomer(@PathVariable Long customerId) {
         return customerService.activeDeactiveCustomer(customerId);
+    }
+
+    @PostMapping("/customersUsingSearch/{search}")
+    public List<Customer> customersUsingSearch(@PathVariable("search") String search) {
+        return customerService.customersUsingMobileNo(search);
+    }
+
+    @GetMapping("/generateCustomerGroupNo")
+    public Long generateCustomerGroupNo() {
+        return customerService.generateCustomerGroupNo();
     }
 }

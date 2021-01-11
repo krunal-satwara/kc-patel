@@ -31,8 +31,8 @@ public class CustomerRemarksController {
     }
 
     @GetMapping("/customerRemarksList/{customerId}")
-    public List<CustomerRemarks> customerRemarksList(@PathVariable("customerId") Long customerId) {
-        return customerRemarksService.customerRemarksList(customerId);
+    public List<CustomerRemarks> customerRemarksList(@PathVariable("customerId") String customerId) {
+        return customerRemarksService.customerRemarksList(Long.parseLong(customerId));
     }
 
     @DeleteMapping("/{customerRemarksId}")
