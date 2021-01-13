@@ -1,0 +1,32 @@
+package com.krunal.kcpatel.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class InquiryRemarks {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long inquiryRemarksId;
+    private Long inquiryId;
+    private String inquiryRemarks;
+    private Long userId;
+    private String userName;
+    private boolean status;
+    @Column(updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdOn;
+    @UpdateTimestamp
+    private LocalDateTime updatedOn;
+
+}

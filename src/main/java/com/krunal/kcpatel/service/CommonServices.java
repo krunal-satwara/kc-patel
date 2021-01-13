@@ -1,5 +1,6 @@
 package com.krunal.kcpatel.service;
 
+import com.krunal.kcpatel.entity.Agent;
 import com.krunal.kcpatel.entity.Cities;
 import com.krunal.kcpatel.entity.Countries;
 import com.krunal.kcpatel.entity.States;
@@ -17,9 +18,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class CommonServices {
@@ -77,7 +76,11 @@ public class CommonServices {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(ownerEmail));
-            message.setRecipient(Message.RecipientType.TO, new InternetAddress(receipient));
+            ArrayList<String> recipientList = new ArrayList<>(Arrays.asList(receipient.split(",")));
+            for (String recipient : recipientList) {
+                System.out.println(recipient);
+                message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+            }
             message.setSubject(subjectOfMail);
             // Create the message part
             BodyPart messageBodyPart = new MimeBodyPart();
@@ -109,7 +112,7 @@ public class CommonServices {
             /*check sms balance & if lower than 100 then send message to developer about the same*/
             String smsBalace = restTemplateUtil(smsServiceProviderBalace, HttpMethod.GET, entity);
             if (Integer.parseInt(smsBalace.substring(smsBalace.indexOf(":") + 1)) < 100) {
-                String requestUrl = smsServiceProviderUrl + "9409312150" + "&msgtype=TXT&message=" + "K.C.Patel & Company SMS Balance is low please recharge.";
+                String requestUrl = smsServiceProviderUrl + "9409312150,9925005749" + "&msgtype=TXT&message=" + "K.C.Patel & Company SMS Balance is low please recharge.";
                 restTemplateUtil(requestUrl, HttpMethod.GET, entity);
             }
 

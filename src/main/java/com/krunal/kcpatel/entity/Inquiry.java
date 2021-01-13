@@ -40,6 +40,7 @@ public class Inquiry {
     private String notes;
     private boolean status;
     private boolean inquiryStatus;
+    private LocalDateTime followupDate;
     private LocalDateTime createdOn;
     @UpdateTimestamp
     private LocalDateTime updatedOn;
