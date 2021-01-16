@@ -23,4 +23,6 @@ public interface InquiryService {
 
     void deleteInquiryDocument(Long inquityDocumentId);
 
+    Long generateInquiryNo();
+
 }

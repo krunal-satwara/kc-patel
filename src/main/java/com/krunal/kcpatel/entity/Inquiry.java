@@ -44,5 +44,6 @@ public class Inquiry {
     private LocalDateTime createdOn;
     @UpdateTimestamp
     private LocalDateTime updatedOn;
+    private Long inquiryNo;
 
 }

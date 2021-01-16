@@ -77,4 +77,9 @@ public class InquiryController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/generateinquiryNo")
+    public Long generateInquiryNo() {
+        return inquiryService.generateInquiryNo();
+    }
 }

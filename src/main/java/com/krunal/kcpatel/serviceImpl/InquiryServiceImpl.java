@@ -181,4 +181,15 @@ public class InquiryServiceImpl implements InquiryService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public Long generateInquiryNo() {
+        Long inquiryNo = inquiryRepository.inquiryNoGenerate();
+        if (inquiryNo == null) {
+            inquiryNo = 1L;
+        } else {
+            inquiryNo += 1L;
+        }
+        return inquiryNo;
+    }
 }
